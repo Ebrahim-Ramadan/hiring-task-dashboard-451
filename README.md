@@ -1,210 +1,252 @@
-# TechFlipp Frontend Task
+# TechFlipp Camera Management System
 
-## Overview
+## Setup Instructions
 
-👋 This is a NextJS interview challenge. Please fork this repo, and push your code to a branch in your forked repo (following the instructions below).
+### Prerequisites
 
-You are tasked with building a responsive frontend application that interfaces with our Camera Management API. The application will allow users to manage cameras and view demographic analytics data collected by these cameras.
-
-## Submission
-
-Please fork this repository and submit your solution as a pull request. Include in your README:
-- Setup instructions
-- Overview of your implementation
-- Any assumptions or design decisions
-- Screenshots of the UI
-
-If you have any questions or need assistance, feel free to open an issue in the main repository. We're here to help!
-
-## Requirements
-
-### 1. Camera List Page
-- Implement a paginated view of cameras
-- Allow users to control how many items appear per page
-- Provide a way to search for cameras by name
-- Display relevant camera information in a user-friendly manner
-
-### 2. Camera Detail Page
-- Create a view showing comprehensive camera information 
-- Design an intuitive layout for camera details
-
-### 3. Camera Update Functionality
-- Develop a user interface for updating camera details
-- Implement appropriate validation with meaningful feedback
-- Consider the user experience during form submission
-
-### 4. Demographics Configuration
-- Enable users to create or edit demographics configuration for cameras - one to one relationship with camera
-- Design form controls appropriate for each configuration parameter
-- Ensure proper validation of configuration values
-
-### 5. Demographics Results & Analytics
-- Implement filtering capabilities for the data
-- Create informative visualizations that convey demographic insights like charts, graphs, tables, etc.
-
-## Technical Requirements
-
-- Build the application using Next.js, following its best practices for routing, data fetching, and component organization
-- Implement responsive design that works well across different devices
-- Let your imagination make the design of the task responsive.
+- Node.js 18+ installed on your machine
+- bun or yarn package manager
 
 
-## Nice-to-Have Technical Features
+### Installation Steps
 
-The following features would enhance your solution:
-- Different rendering ways as needed (SSR, ISR, SSG, etc.)
-- Skeleton loading states to improve perceived performance
-- Seamless data refresh mechanisms
-- Render error messages in form fields
-- Optimistic UI updates for a better user experience
-- Organized state management
-- Use React Query (TanStack Query) for fetching and caching data.
-- Creative and intuitive UI/UX design
-- SEO and performance optimizations
-- Unit tests for key components
+1. **Clone the repository**
 
-## API Specification
-
-**Base URL**: https://task-451-api.ryd.wafaicloud.com/
-**Schema**: https://task-451-api.ryd.wafaicloud.com/docs
-
-### Enum Definitions
-
-#### Genders
-```
-MALE = "male"
-FEMALE = "female"
+```shellscript
+git clone https://github.com/Techflipp/hiring-task-dashboard-451
+cd techflipp-camera-management
 ```
 
-#### Ages
-```
-ZERO_EIGHTEEN = "0-18"
-NINETEEN_THIRTY = "19-30"
-THIRTYONE_FORTYFIVE = "31-45"
-FORTYSIX_SIXTY = "46-60"
-SIXTYPLUS = "60+"
+
+2. **Install dependencies**
+
+```shellscript
+bun install
+# or
+yarn install
 ```
 
-#### Emotions
-```
-ANGRY = "angry"
-FEAR = "fear"
-HAPPY = "happy"
-NEUTRAL = "neutral"
-SAD = "sad"
-SURPRISE = "surprise"
+
+3. **Start the development server**
+
+```shellscript
+bun run dev
+# or
+yarn dev
 ```
 
-#### Ethnic Groups
-```
-WHITE = "white"
-AFRICAN = "african"
-SOUTH_ASIAN = "south_asian"
-EAST_ASIAN = "east_asian"
-MIDDLE_EASTERN = "middle_eastern"
-```
 
-### Tags Endpoint
+4. **Open the application**
+Navigate to [http://localhost:3000](http://localhost:3000) in your browser
 
-#### 1. List All Tags
-```
-GET /tags/
+
+### Build for Production
+
+```shellscript
+bun run build
+bun start
 ```
 
-Response: List of all available tags
+### Environment Variables
 
-### Camera Endpoints
+the provided API endpoint in .env file
+---
 
-#### 1. List Cameras
+## Overview of Implementation
+
+### Architecture & Technology Stack
+
+**Frontend Framework:**
+
+- **Next.js 14** with App Router for modern React development
+- **TypeScript** for type safety and better developer experience
+- **Tailwind CSS** with shadcn/ui components for consistent, responsive design
+
+
+**State Management & Data Fetching:**
+
+- **TanStack Query (React Query)** for server state management, caching, and optimistic updates
+- **React Hook Form** with **Zod** validation for form handling
+- **Sonner** for toast notifications
+
+
+**UI Components:**
+
+- **shadcn/ui** component library built on Radix UI primitives
+- **Recharts** for data visualization and analytics charts
+- **Lucide React** for consistent iconography
+
+
+### Key Features Implemented
+
+#### 1. Camera List Page (`/`)
+
+- **Paginated table view** with customizable items per page (5, 10, 20, 50)
+- **Search functionality** by camera name with debounced input
+- **Responsive design** that works on mobile, tablet, and desktop
+- **Loading states** with skeleton components for better UX
+- **Error handling** with user-friendly error messages
+
+
+#### 2. Camera Detail Page (`/cameras/[id]`)
+
+- **Comprehensive camera information** display
+- **Demographics configuration** details (if configured)
+- **Quick action buttons** for editing camera and configuring demographics
+- **Server-side rendering** for better SEO and initial load performance
+
+
+#### 3. Camera Update Functionality (`/cameras/[id]/edit`)
+
+- **Form validation** using React Hook Form and Zod schemas
+- **Tag selection** with checkbox-based multi-select interface
+- **Real-time validation feedback** with field-level error messages
+- **Optimistic UI updates** for immediate feedback
+- **Proper error handling** with toast notifications
+
+
+#### 4. Demographics Configuration (`/demographics/config/[cameraId]`)
+
+- **Create/Edit forms** for demographics configuration
+- **Appropriate input controls** including sliders for decimal values
+- **Comprehensive validation** with min/max constraints
+- **User-friendly interface** with descriptions for each field
+
+
+#### 5. Demographics Results & Analytics (`/cameras/[id]`)
+
+- **Interactive filtering** by date range, gender, age, emotion, and ethnicity
+- **Multiple chart types** including pie charts and bar charts
+- **Tabbed interface** for different analytics views (Overview, Gender, Age, Ethnicity)
+- **Responsive charts** that adapt to different screen sizes
+- **Data processing** for meaningful insights and visualizations
+
+
+### File Structure
+
+```plaintext
+app/
+├── cameras/[id]/
+│   ├── page.tsx          # Camera details page
+│   └── edit/page.tsx     # Camera edit form
+├── demographics/config/[cameraId]/
+│   └── page.tsx          # Demographics configuration
+├── layout.tsx            # Root layout with providers
+├── page.tsx              # Home page (camera list)
+├── not-found.tsx         # 404 page
+└── globals.css           # Global styles
+
+components/
+├── cameras/              # Camera-related components
+├── demographics/         # Demographics components
+├── layout/               # Layout components
+├── skeletons/            # Loading state components
+├── ui/                   # Reusable UI components
+└── providers.tsx         # React Query and theme providers
+
+lib/
+├── api/                  # API functions
+├── types.ts              # TypeScript type definitions
+└── utils.ts              # Utility functions
 ```
-GET /cameras/
-Query Parameters:
-- page: int (default=1) - Page number
-- size: int (default=20) - Items per page
-- camera_name: string (optional) - Filter by camera name
-```
 
-Response: Paginated list of cameras
+---
 
-#### 2. Get Camera Details
-```
-GET /cameras/{camera_id}
-```
+## Assumptions and Design Decisions
 
-Response: Detailed camera information including demographics config if it exists
+### API Assumptions
 
-#### 3. Update Camera
-```
-PUT /cameras/{camera_id}
-Body: {
-  "name": string,
-  "rtsp_url": string,
-  "stream_frame_width": int (optional, min=1, max=2560),
-  "stream_frame_height": int (optional, min=1, max=2560),
-  "stream_max_length": int (optional, min=0, max=10000),
-  "stream_quality": int (optional, min=80, max=100),
-  "stream_fps": int (optional, min=1, max=120),
-  "stream_skip_frames": int (optional, min=0, max=100),
-  "tags": array of tag ids (optional)
-}
-```
+1. **API Stability**: Assumed the provided API endpoints are stable and follow the documented schema
+2. **Error Handling**: Assumed standard HTTP status codes for error responses
+3. **Data Consistency**: Assumed that camera IDs remain consistent across API calls
+4. **Pagination**: Assumed the API returns total count and page information for proper pagination
 
-### Demographics Endpoints
 
-#### 1. Create Demographics Configuration
-```
-POST /demographics/config
-Body: {
-  "camera_id": string,
-  "track_history_max_length": int (optional, min=1, max=100),
-  "exit_threshold": int (optional, min=1, max=300),
-  "min_track_duration": int (optional, min=1, max=60),
-  "detection_confidence_threshold": float (optional, min=0.1, max=1.0),
-  "demographics_confidence_threshold": float (optional, min=0.1, max=1.0),
-  "min_track_updates": int (optional, min=1, max=100),
-  "box_area_threshold": float (optional, min=0.05, max=1.0),
-  "save_interval": int (optional, min=300, max=1800),
-  "frame_skip_interval": float (optional, min=0.1, max=5.0)
-}
-```
+### Design Decisions
 
-#### 2. Update Demographics Configuration
-```
-PUT /demographics/config/{config_id}
-Body: {
-  "track_history_max_length": int (optional, min=1, max=100),
-  "exit_threshold": int (optional, min=1, max=300),
-  "min_track_duration": int (optional, min=1, max=60),
-  "detection_confidence_threshold": float (optional, min=0.1, max=1.0),
-  "demographics_confidence_threshold": float (optional, min=0.1, max=1.0),
-  "min_track_updates": int (optional, min=1, max=100),
-  "box_area_threshold": float (optional, min=0.05, max=1.0),
-  "save_interval": int (optional, min=300, max=1800),
-  "frame_skip_interval": float (optional, min=0.1, max=5.0)
-}
-```
+#### 1. **Next.js App Router over Pages Router**
 
-#### 3. Get Demographics Results
-```
-GET /demographics/results
-Query Parameters:
-- camera_id: string (required)
-- gender: string (optional) - Filter by gender
-- age: string (optional) - Filter by age group
-- emotion: string (optional) - Filter by emotion
-- ethnicity: string (optional) - Filter by ethnicity
-- start_date: datetime (optional) - Filter by start date
-- end_date: datetime (optional) - Filter by end date
-```
+- **Reasoning**: App Router provides better performance with Server Components, improved routing, and better developer experience
+- **Benefits**: Server-side rendering for initial data, better SEO, and modern React patterns
 
-Response: List of demographics results and analytics data
 
-## Evaluation Criteria
+#### 2. **TanStack Query for Data Management**
 
-Your submission will be evaluated based on:
-- Feature completeness according to requirements
-- Code quality and organization
-- UI/UX design and responsiveness
-- Performance optimizations
-- Unit test coverage
-- Error handling
+- **Reasoning**: Provides excellent caching, background refetching, and optimistic updates
+- **Benefits**: Reduces API calls, improves user experience, and handles loading/error states automatically
+
+
+#### 3. **Form Validation Strategy**
+
+- **React Hook Form + Zod**: Chosen for type-safe validation and excellent performance
+- **Field-level validation**: Provides immediate feedback to users
+- **Schema-based validation**: Ensures consistency between frontend and API expectations
+
+
+#### 4. **Component Architecture**
+
+- **Separation of concerns**: API logic separated from UI components
+- **Reusable components**: Created skeleton loaders and shared UI components
+- **Feature-based organization**: Components organized by feature rather than type
+
+
+#### 5. **Responsive Design Approach**
+
+- **Mobile-first**: Designed for mobile devices first, then enhanced for larger screens
+- **Flexible layouts**: Used CSS Grid and Flexbox for adaptive layouts
+- **Touch-friendly**: Ensured buttons and interactive elements are appropriately sized
+
+
+#### 6. **Error Handling Strategy**
+
+- **Graceful degradation**: Application continues to work even when some features fail
+- **User-friendly messages**: Error messages are clear and actionable
+- **Retry mechanisms**: Built-in retry logic for failed API calls
+
+
+#### 7. **Performance Optimizations**
+
+- **Server Components**: Used for initial data fetching to reduce client-side work
+- **Skeleton loading**: Improves perceived performance during data loading
+- **Query caching**: Reduces redundant API calls
+- **Code splitting**: Automatic code splitting with Next.js App Router
+
+
+#### 8. **Accessibility Considerations**
+
+- **Semantic HTML**: Used appropriate HTML elements for better screen reader support
+- **ARIA labels**: Added where necessary for complex interactions
+- **Keyboard navigation**: Ensured all interactive elements are keyboard accessible
+- **Color contrast**: Used shadcn/ui color system for proper contrast ratios
+
+
+#### 9. **Data Visualization Choices**
+
+- **Recharts library**: Chosen for its React-native approach and customization options
+- **Multiple chart types**: Used pie charts for distributions and bar charts for comparisons
+- **Responsive charts**: Charts adapt to container size for mobile compatibility
+
+
+#### 10. **State Management Philosophy**
+
+- **Server state vs Client state**: Used React Query for server state, React state for UI state
+- **Optimistic updates**: Implemented for better user experience during mutations
+- **Cache invalidation**: Strategic cache invalidation to keep data fresh
+
+
+### Trade-offs Made
+
+1. **Checkbox vs Dropdown for Tags**: Chose checkboxes over a complex multi-select dropdown for better usability and to avoid registry issues
+2. **Client-side filtering vs Server-side**: Implemented client-side chart filtering for better interactivity, assuming reasonable data sizes
+3. **Bundle size vs Features**: Included comprehensive charting library despite bundle size impact for better analytics experience
+
+
+### Future Enhancements Considered
+
+1. **Real-time updates**: WebSocket integration for live data updates
+2. **Advanced filtering**: More sophisticated filtering options for analytics
+3. **Export functionality**: CSV/PDF export for analytics data
+4. **User authentication**: Role-based access control
+5. **Offline support**: Service worker for offline functionality
+6. **Advanced caching**: Redis or similar for server-side caching
+
